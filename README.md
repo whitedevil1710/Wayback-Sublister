@@ -1,11 +1,15 @@
 # Wayback Machine Data Fetcher
 
 This Bash script fetches data from the Wayback Machine for a given URL. It provides options to save the output to a file, specify a filename, and display a help message.
-
+## Installation
+```bash
+chmod +x setup.sh
+sublister
+```
 ## Usage
 
 ```bash
-./script.sh [OPTIONS]
+sublister [OPTIONS]
 ```
 ## Options
 + -u, --url <URL>: Specify the URL to fetch data from (without http or https).
@@ -18,9 +22,9 @@ This Bash script fetches data from the Wayback Machine for a given URL. It provi
 Fetch data from Wayback Machine for a URL:
 
 ```bash
-./script.sh -u example.com
+sublister -u example.com
 ```
 Fetch data from Wayback Machine for a URL, save output to a specific filename:
 ```bash
-./script.sh -u example.com -s -f my_archive.txt
+sublister -u example.com -s -f my_archive.txt
 ```
