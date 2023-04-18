@@ -4,7 +4,7 @@ This Bash script fetches data from the Wayback Machine for a given URL. It provi
 ## Installation
 ```bash
 chmod +x setup.sh
-sublister
+./setup.sh
 ```
 ## Usage
 
