@@ -1,0 +1,85 @@
+#!/bin/bash
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NC='\033[0m'
+
+echo -e "${GREEN}
+ ██████  █    ██  ▄▄▄▄    ██▓     ██▓  ██████ ▄▄▄█████▓▓█████  ██▀███  ${NC}
+${GREEN}▒██    ▒  ██  ▓██▒▓█████▄ ▓██▒    ▓██▒▒██    ▒ ▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒${NC}
+${YELLOW}░ ▓██▄   ▓██  ▒██░▒██▒ ▄██▒██░    ▒██▒░ ▓██▄   ▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒${NC}
+${YELLOW}  ▒   ██▒▓▓█  ░██░▒██░█▀  ▒██░    ░██░  ▒   ██▒░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄  ${NC}
+${GREEN}▒██████▒▒▒▒█████▓ ░▓█  ▀█▓░██████▒░██░▒██████▒▒  ▒██▒ ░ ░▒████▒░██▓ ▒██▒${NC}
+${RED}▒ ▒▓▒ ▒ ░░▒▓▒ ▒ ▒ ░▒▓███▀▒░ ▒░▓  ░░▓  ▒ ▒▓▒ ▒ ░  ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░${NC}
+${RED}░ ░▒  ░ ░░░▒░ ░ ░ ▒░▒   ░ ░ ░ ▒  ░ ▒ ░░ ░▒  ░ ░    ░     ░ ░  ░  ░▒ ░ ▒░${NC}
+${RED}░  ░  ░   ░░░ ░ ░  ░    ░   ░ ░    ▒ ░░  ░  ░    ░         ░     ░░   ░ ${NC}
+${RED}      ░     ░      ░          ░  ░ ░        ░              ░  ░   ░     ${NC}
+${RED}                        ░${NC}
+"
+
+
+# Display help message
+show_help() {
+  echo "Usage: $0"
+  echo "This script fetches data from the Wayback Machine for a given URL."
+  echo "Options:"
+  echo "  -u, --url <URL>          Specify the URL to fetch data from (without http or https)"
+  echo "  -s, --save               Save the output to a file"
+  echo "  -f, --filename <FILE>    Specify the filename to save the output to (default: archive_urls.txt)"
+  echo "  -h, --help               Show this help message"
+}
+
+# Error handling function
+handle_error() {
+  local error_message="$1"
+  echo "Error: $error_message"
+  show_help
+  exit 1
+}
+
+url=""
+save_file=false
+filename="archive_urls.txt"
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -u|--url)
+      url="$2"
+      shift 2
+      ;;
+    -s|--save)
+      save_file=true
+      shift
+      ;;
+    -f|--filename)
+      filename="$2"
+      shift 2
+      ;;
+    -h|--help)
+      show_help
+      exit 0
+      ;;
+    *)
+      handle_error "Invalid option: $1"
+      ;;
+  esac
+done
+
+# Check if URL is provided
+if [ -z "$url" ]; then
+  handle_error "URL is required. Please specify a URL with -u or --url option."
+fi
+
+# Fetch data from Wayback Machine and save to file if specified
+if [ "$save_file" == true ]; then
+  curl "http://web.archive.org/cdx/search/cdx?url=$url/*&output=text&fl=original&collapse=urlkey&from=" > "$filename" || handle_error "Failed to fetch data from Wayback Machine."
+  echo "Output saved to file: $filename"
+else
+  curl "http://web.archive.org/cdx/search/cdx?url=$url/*&output=text&fl=original&collapse=urlkey&from=" || handle_error "Failed to fetch data from Wayback Machine."
+fi
+
+  curl "http://web.archive.org/cdx/search/cdx?url=$url/*&output=text&fl=original&collapse=urlkey&from=" || handle_error "Failed to fetch data from Wayback Machine."
+fi
+
